@@ -20,6 +20,10 @@ services:
       - ./prometheus/data:/prometheus
     restart: on-failure
 
+  pushgateway:
+    image: prom/pushgateway
+    container_name: pushgateway
+    
   node-exporter:
     image: prom/node-exporter
     container_name: my-node-exporter
