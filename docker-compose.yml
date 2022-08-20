@@ -13,11 +13,10 @@ services:
 
   prometheus:
     image: prom/prometheus
-    container_name: my-prometheus
-    user: "1000"
+    container_name: prometheus
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus/data:/prometheus
+      - monitor-storage:/prometheus
+      - ./prometheus:/etc/prometheus/
     restart: on-failure
 
   pushgateway:
@@ -26,19 +25,20 @@ services:
     
   node-exporter:
     image: prom/node-exporter
-    container_name: my-node-exporter
+    container_name: node-exporter
     restart: on-failure
     depends_on:
     - prometheus
    
   grafana:
     image: grafana/grafana
+    container_name: grafana
     user: "1000"
-    container_name: my-grafana
     ports:
       - 3000:3000
     volumes:
       - ./grafana:/var/lib/grafana
     restart: on-failure
-    depends_on:
-    - prometheus
+
+volumes:
+ monitor-storage:
